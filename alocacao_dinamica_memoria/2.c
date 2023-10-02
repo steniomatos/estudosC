@@ -25,7 +25,7 @@ void preencherPessoas(struct Pessoa* pessoas, int n) {
         printf("Digite os dados da pessoa %d:\n", i + 1);
         printf("CPF: ");
         scanf("%s", pessoas[i].CPF);
-        printf("Nome: ");
+        printf("Primeiro nome: ");
         scanf("%s", pessoas[i].nome);
         printf("Salário: ");
         scanf("%lf", &pessoas[i].salario);
