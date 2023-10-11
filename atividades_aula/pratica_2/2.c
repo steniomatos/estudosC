@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 /**
+ * @steniomatos
  * Um(a) procedimento/função que leia as duas sequências de números naturais a partir
 do arquivo, armazene-as em dois vetores e apresente os vetores na tela.
 */
