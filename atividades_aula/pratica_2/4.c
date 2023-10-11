@@ -69,7 +69,47 @@ void lerEArmazenarSequencias(char *nomeArquivo, int vetor1[], int vetor2[], int 
 
 // Função para gerar conjuntos A e B a partir das sequências lidas
 void gerarConjuntos(int vetor1[], int tamanho1, int vetor2[], int tamanho2, int conjuntoA[], int *tamanhoA, int conjuntoB[], int *tamanhoB) {
-    // Implementação da função gerarConjuntos
+    // Inicializa conjuntos vazios
+    *tamanhoA = 0;
+    *tamanhoB = 0;
+
+    // Adiciona elementos únicos do vetor1 para conjuntoA
+    for (int i = 0; i < tamanho1; i++) {
+        int elementoRepetido = 0;
+
+        // Verifica se o elemento já está em conjuntoA
+        for (int j = 0; j < *tamanhoA; j++) {
+            if (vetor1[i] == conjuntoA[j]) {
+                elementoRepetido = 1;
+                break;
+            }
+        }
+
+        // Adiciona o elemento a conjuntoA se não estiver repetido
+        if (!elementoRepetido) {
+            conjuntoA[*tamanhoA] = vetor1[i];
+            (*tamanhoA)++;
+        }
+    }
+
+    // Adiciona elementos únicos do vetor2 para conjuntoB
+    for (int i = 0; i < tamanho2; i++) {
+        int elementoRepetido = 0;
+
+        // Verifica se o elemento já está em conjuntoB
+        for (int j = 0; j < *tamanhoB; j++) {
+            if (vetor2[i] == conjuntoB[j]) {
+                elementoRepetido = 1;
+                break;
+            }
+        }
+
+        // Adiciona o elemento a conjuntoB se não estiver repetido
+        if (!elementoRepetido) {
+            conjuntoB[*tamanhoB] = vetor2[i];
+            (*tamanhoB)++;
+        }
+    }
 }
 
 // Função para gerar o conjunto potência de um conjunto e armazenar no arquivo
