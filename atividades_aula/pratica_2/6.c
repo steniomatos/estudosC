@@ -3,12 +3,9 @@
 
 /**
  * @steniomatos
- * Um(a) procedimento/função que determine, e apresente na tela, os conjuntos
-próprios dos conjuntos potência (das partes) de A e de B. Armazene os conjuntos
-próprios no arquivo original.
+ * Um(a) procedimento/função que determine, e apresente na tela, a união de A e de B.
+Armazene a união dos dois conjuntos no arquivo original.
 */
-
-int conjuntoEProprio(int *conjunto, int tamanho, int conjuntoPai[], int tamanhoPai);
 
 #define TAMANHO_MAXIMO 100  // Defina o tamanho máximo dos conjuntos e vetores
 
@@ -115,72 +112,33 @@ void gerarConjuntos(int vetor1[], int tamanho1, int vetor2[], int tamanho2, int 
     }
 }
 
-// Função para gerar o conjunto potência de um conjunto e armazenar no arquivo
-void gerarConjuntoPotencia(int conjunto[], int tamanho, char *nomeArquivo) {
-    FILE *arquivo = fopen(nomeArquivo, "a");
-    
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        exit(1);
-    }
-
-    // Itera sobre todos os possíveis subconjuntos
-    for (int mascara = 0; mascara < (1 << tamanho); mascara++) {
-        fprintf(arquivo, "{ ");
-
-        // Adiciona elementos do conjunto que estão com bit ligado na máscara
-        for (int i = 0; i < tamanho; i++) {
-            if (mascara & (1 << i)) {
-                fprintf(arquivo, "%d ", conjunto[i]);
-            }
-        }
-
-        fprintf(arquivo, "}\n");
-    }
-
-    fclose(arquivo);
-}
-
-// Função para determinar conjuntos próprios dos conjuntos potência e armazenar no arquivo
-void determinarConjuntosProprios(int conjuntoPotencia[], int tamanhoPotencia, char *nomeArquivo) {
-    FILE *arquivo = fopen(nomeArquivo, "a");
-
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        exit(1);
-    }
-
-    // Itera sobre os conjuntos potência
-    for (int i = 0; i < tamanhoPotencia; i++) {
-        // Verifica se o conjunto é próprio em relação ao conjunto pai
-        if (conjuntoEProprio(conjuntoPotencia[i], i + 1, conjuntoPotencia, tamanhoPotencia)) {
-            // Escreve o conjunto próprio no arquivo
-            escreverConjuntoEmArquivo(arquivo, conjuntoPotencia[i], i + 1);
-        }
-    }
-
-    fclose(arquivo);
-}
-
-// Função para verificar se um conjunto é próprio
-int conjuntoEProprio(int *conjunto, int tamanho, int conjuntoPai[], int tamanhoPai) {
-    // Verifica se pelo menos um elemento do conjunto não está no conjunto pai
+// Função para verificar se um elemento está presente em um conjunto
+int elementoEstaNoConjunto(int elemento, int conjunto[], int tamanho) {
     for (int i = 0; i < tamanho; i++) {
-        int encontrado = 0;
-
-        for (int j = 0; j < tamanhoPai; j++) {
-            if (conjunto[i] == conjuntoPai[j]) {
-                encontrado = 1;
-                break;
-            }
+        if (conjunto[i] == elemento) {
+            return 1;  // Elemento encontrado no conjunto
         }
+    }
+    return 0;  // Elemento não encontrado no conjunto
+}
 
-        if (!encontrado) {
-            return 1;  // Se algum elemento não está no conjunto pai, o conjunto é próprio
+// Função para calcular a união de dois conjuntos e armazenar no arquivo
+void calcularUniao(int conjuntoA[], int tamanhoA, int conjuntoB[], int tamanhoB) {
+    printf("União de A e B: { ");
+
+    // Adiciona elementos de A à união
+    for (int i = 0; i < tamanhoA; i++) {
+        printf("%d ", conjuntoA[i]);
+    }
+
+    // Adiciona elementos de B à união, excluindo duplicatas
+    for (int i = 0; i < tamanhoB; i++) {
+        if (!elementoEstaNoConjunto(conjuntoB[i], conjuntoA, tamanhoA)) {
+            printf("%d ", conjuntoB[i]);
         }
     }
 
-    return 0;  // Se todos os elementos estão no conjunto pai, o conjunto não é próprio
+    printf("}\n");
 }
 
 int main() {
@@ -221,9 +179,8 @@ int main() {
     // Armazena conjunto B no arquivo
     escreverConjuntoEmArquivo(arquivo, conjuntoB, tamanhoB);
 
-    // Determina e armazena os conjuntos próprios dos conjuntos potência de A e B
-    determinarConjuntosProprios(conjuntoA, tamanhoA, nomeArquivo);
-    determinarConjuntosProprios(conjuntoB, tamanhoB, nomeArquivo);
+    // Calcula e armazena a união de A e B no arquivo
+    calcularUniao(conjuntoA, tamanhoA, conjuntoB, tamanhoB);
 
     fclose(arquivo);
 
